@@ -7,8 +7,14 @@ import java.util.*;
 public class Calculadora implements CalculadoraConstants {
 
     public static void main(String[] args) throws ParseException {
+
+                generateTitleASCIIArt("Math scientific Calc");
+
         Scanner entradaEscaner = new Scanner(System.in);
+
+
                 while (true) { // Ciclo infinito
+
                 System.out.print("Ingrese una expresi\u00f3n: ");
                 String calculo = entradaEscaner.nextLine();
 
@@ -50,6 +56,36 @@ public class Calculadora implements CalculadoraConstants {
 
     public static double tan(double x) {
         return Math.tan(Math.toRadians(x)); // Convertir grados a radianes para función tan
+    }
+
+        public static double asin(double x) {
+        return Math.asin(x);
+    }
+
+    public static double acos(double x) {
+        return Math.acos(x);
+    }
+
+    public static double atan(double x) {
+        return Math.atan(x);
+    }
+
+    public static void generateTitleASCIIArt(String title) {
+        int titleLength = title.length();
+        int borderLength = titleLength + 4;
+
+        StringBuilder asciiArt = new StringBuilder();
+
+        // Top border
+        asciiArt.append("+" + "-".repeat(borderLength - 2) + "+").append("\n");
+
+        // Title line
+        asciiArt.append("| " + title + " ".repeat(borderLength - titleLength - 3) + "|").append("\n");
+
+        // Bottom border
+        asciiArt.append("+" + "-".repeat(borderLength - 2) + "+").append("\n");
+
+        System.out.println(asciiArt.toString());
     }
 
 // Método para la expresión (principal)
@@ -184,6 +220,30 @@ public class Calculadora implements CalculadoraConstants {
         }
       break;
       }
+    case ASIN:{
+      jj_consume_token(ASIN);
+      jj_consume_token(LPAREN);
+      result = Expression();
+      jj_consume_token(RPAREN);
+{if ("" != null) return Calculadora.asin(result);}
+      break;
+      }
+    case ACOS:{
+      jj_consume_token(ACOS);
+      jj_consume_token(LPAREN);
+      result = Expression();
+      jj_consume_token(RPAREN);
+{if ("" != null) return Calculadora.acos(result);}
+      break;
+      }
+    case ATAN:{
+      jj_consume_token(ATAN);
+      jj_consume_token(LPAREN);
+      result = Expression();
+      jj_consume_token(RPAREN);
+{if ("" != null) return Calculadora.atan(result);}
+      break;
+      }
     default:
       jj_la1[4] = jj_gen;
       jj_consume_token(-1);
@@ -208,7 +268,7 @@ public class Calculadora implements CalculadoraConstants {
 	   jj_la1_init_0();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x60,0x60,0x180,0x180,0x7a00,};
+	   jj_la1_0 = new int[] {0x60,0x60,0x180,0x180,0x3fa00,};
 	}
 
   /** Constructor with InputStream. */
@@ -354,7 +414,7 @@ public class Calculadora implements CalculadoraConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
 	 jj_expentries.clear();
-	 boolean[] la1tokens = new boolean[15];
+	 boolean[] la1tokens = new boolean[18];
 	 if (jj_kind >= 0) {
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
@@ -368,7 +428,7 @@ public class Calculadora implements CalculadoraConstants {
 		 }
 	   }
 	 }
-	 for (int i = 0; i < 15; i++) {
+	 for (int i = 0; i < 18; i++) {
 	   if (la1tokens[i]) {
 		 jj_expentry = new int[1];
 		 jj_expentry[0] = i;

@@ -28,6 +28,12 @@ public interface CalculadoraConstants {
   int COS = 13;
   /** RegularExpression Id. */
   int TAN = 14;
+  /** RegularExpression Id. */
+  int ASIN = 15;
+  /** RegularExpression Id. */
+  int ACOS = 16;
+  /** RegularExpression Id. */
+  int ATAN = 17;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -49,6 +55,9 @@ public interface CalculadoraConstants {
     "\"sin\"",
     "\"cos\"",
     "\"tan\"",
+    "\"asin\"",
+    "\"acos\"",
+    "\"atan\"",
   };
 
 }
