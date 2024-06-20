@@ -3,6 +3,9 @@
 // Paquete y librerías necesarias
 import java.io.*;
 import java.util.*;
+import CalculadoraLexer;
+import CalculadoraParser;
+
 
 public class Calculadora implements CalculadoraConstants {
 
@@ -18,42 +21,56 @@ public class Calculadora implements CalculadoraConstants {
                 print("3. El resultado de la evaluaci\u00f3n se mostrar\u00e1 en la pantalla.");
                 print("");
                 generateTitleASCIIArt("Ejemplos de uso:");
+                print("Aritm\u00e9ticas");
+                print("* 2 + 2    = 4");
+                print("* 5 - 3    = 2");
+                print("* 4 * 3    = 12");
+                print("* 10 / 2   = 5");
 
-                print("* 2 + 2 = 4");
-                print("* 5 - 3 = 2");
-                print("* 4 * 3 = 12");
-                print("* 10 / 2 = 5");
-                print("* 2^3 = 8");
-                print("* \u221a9 = 3");
-                print("* log(10) = 1");
-                print("* sin(\u03c0/2) = 1");
-                print("* cos(\u03c0) = -1");
-                print("* tan(\u03c0/4) = 1");
+                print("");
+                print("Trigonom\u00e9tricas");
+                print("* log(10)  = 1");
+                print("* sin(90)  = 1");
+                print("* cos(180) = -1");
+                print("* tan(45)  = 0.9");
+                print("* asin(1)  = 1.5");
+                print("* acos(1)  = 0");
+                print("* atan(45) = 1.5");
+
                 print("");
 
 
         Scanner entradaEscaner = new Scanner(System.in);
+                Calculadora parser = new Calculadora(new StringReader(""));
 
                 while (true) { // Ciclo infinito
 
                 generateTitleASCIIArt("Ingrese una expresi\u00f3n: ");
                 String calculo = entradaEscaner.nextLine();
+                        parser.ReInit(new StringReader(calculo));
+
 
                 // Intenta parsear la expresión y manejar la excepción ParseException
                 try {
-                    Calculadora parser = new Calculadora(new StringReader(calculo));
-
 
                 double result = parser.Expression();
 
-
-                    // Redondear valores muy pequeños a cero
+                        // Redondear valores muy pequeños a cero
                     if (Math.abs(result) < 1e-10) result = 0.0;
-                        System.out.println("Resultado: " + result);
+
+                                // Imprimir el resultado con dos decimales o sin decimales (si es entero)
+                    String formattedResult = String.format("%.2f", result); // Formatear con dos decimales
+                    if (formattedResult.indexOf('.') == -1) { // Si no hay punto decimal, eliminar los ceros decimales
+                        formattedResult = formattedResult.replace(".00", "");
+                    }
+                    System.out.println("Resultado: " + formattedResult);
+
                 } catch (TokenMgrError e) {
                             System.err.println("Error l\u00e9xico: " + e.getMessage());
                         } catch (ParseException e) {
                             System.err.println("Error sint\u00e1ctico: " + e.getMessage());
+                        }catch (Exception e) {
+                                System.err.println("Error general: " + e.getMessage());
                         }
                         // Limpiar la pantalla (opcional)
                 System.out.print("\033[H\033[2J"); // Limpia la pantalla en la mayoría de terminales
@@ -65,6 +82,33 @@ public class Calculadora implements CalculadoraConstants {
                     break; // Salir del bucle si no se ingresa "s"
                 }
             }
+    }
+
+        // Método para analizar una expresión y obtener el resultado
+    public static double evaluar(String expresion) throws ParseException {
+        // Inicialización del analizador
+        SimpleCharStream stream = new SimpleCharStream(expresion);
+        CalculadoraLexer lexer = new CalculadoraLexer(stream);
+        CalculadoraParser parser = new CalculadoraParser(lexer);
+
+        // Análisis de la expresión y obtención del árbol de sintaxis abstracta (AST)
+        Token token = lexer.getNextToken();
+        double resultado = parser.Expression(token);
+
+        return resultado;
+    }
+
+        // Método para calcular la potenciación
+    public static double potenciar(double base, double exponente) {
+        return Math.pow(base, exponente);
+    }
+
+    // Método para calcular la raíz cuadrada
+    public static double raizCuadrada(double numero) {
+        if (numero < 0) {
+            throw new ArithmeticException("Error: Ra\u00edz cuadrada de un n\u00famero negativo");
+        }
+        return Math.sqrt(numero);
     }
 
     public static double sin(double x) {
@@ -122,6 +166,15 @@ public class Calculadora implements CalculadoraConstants {
         System.out.println("\\____|__  (____  |__| |___|  / /_______  /\\___  |__|\\___  |___|  |__| |__||__|  |__|\\___  >  \\______  (____  |____/\\___  >");
         System.out.println("        \\/     \\/          \\/          \\/     \\/        \\/     \\/                       \\/          \\/      \\/         \\/ ");
     }
+
+
+        public static double log(double value) {
+                double base = 10;
+        if (base <= 0 || base == 1) {
+                throw new IllegalArgumentException("Invalid base for logarithm");
+            }
+        return Math.log(value) / Math.log(base);
+}
 
 // Método para la expresión (principal)
   static final public double Expression() throws ParseException {double result, term;
@@ -279,6 +332,14 @@ public class Calculadora implements CalculadoraConstants {
 {if ("" != null) return Calculadora.atan(result);}
       break;
       }
+    case LOG:{
+      jj_consume_token(LOG);
+      jj_consume_token(LPAREN);
+      result = Expression();
+      jj_consume_token(RPAREN);
+{if ("" != null) return Calculadora.log(result);}
+      break;
+      }
     default:
       jj_la1[4] = jj_gen;
       jj_consume_token(-1);
@@ -303,7 +364,7 @@ public class Calculadora implements CalculadoraConstants {
 	   jj_la1_init_0();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x60,0x60,0x180,0x180,0x3fa00,};
+	   jj_la1_0 = new int[] {0x60,0x60,0x180,0x180,0x13fa00,};
 	}
 
   /** Constructor with InputStream. */
@@ -449,7 +510,7 @@ public class Calculadora implements CalculadoraConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
 	 jj_expentries.clear();
-	 boolean[] la1tokens = new boolean[18];
+	 boolean[] la1tokens = new boolean[21];
 	 if (jj_kind >= 0) {
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
@@ -463,7 +524,7 @@ public class Calculadora implements CalculadoraConstants {
 		 }
 	   }
 	 }
-	 for (int i = 0; i < 18; i++) {
+	 for (int i = 0; i < 21; i++) {
 	   if (la1tokens[i]) {
 		 jj_expentry = new int[1];
 		 jj_expentry[0] = i;

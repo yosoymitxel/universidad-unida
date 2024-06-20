@@ -34,6 +34,12 @@ public interface CalculadoraConstants {
   int ACOS = 16;
   /** RegularExpression Id. */
   int ATAN = 17;
+  /** RegularExpression Id. */
+  int POT = 18;
+  /** RegularExpression Id. */
+  int SQRT = 19;
+  /** RegularExpression Id. */
+  int LOG = 20;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -58,6 +64,9 @@ public interface CalculadoraConstants {
     "\"asin\"",
     "\"acos\"",
     "\"atan\"",
+    "\"^\"",
+    "\"sqrt\"",
+    "\"log\"",
   };
 
 }
