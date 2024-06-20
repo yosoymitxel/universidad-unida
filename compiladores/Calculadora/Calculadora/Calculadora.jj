@@ -8,21 +8,36 @@ public class Calculadora {
 
     public static void main(String[] args) throws ParseException {
         Scanner entradaEscaner = new Scanner(System.in);
-
-        System.out.print("Ingrese una expresión: ");
-        String calculo = entradaEscaner.nextLine();
-
-        // Intenta parsear la expresión y manejar la excepción ParseException
-        try {
-            Calculadora parser = new Calculadora(new StringReader(calculo));
-            double result = parser.Expression();
-
-            // Redondear valores muy pequeños a cero
-            if (Math.abs(result) < 1e-10) result = 0.0;
-            System.out.println("Resultado: " + result);
-        } catch (ParseException e) {
-            System.out.println("Error de sintaxis: " + e.getMessage());
-        }
+		while (true) { // Ciclo infinito
+        	System.out.print("Ingrese una expresión: ");
+	        String calculo = entradaEscaner.nextLine();
+	
+	        // Intenta parsear la expresión y manejar la excepción ParseException
+	        try {
+	            Calculadora parser = new Calculadora(new StringReader(calculo));
+	
+				
+            	double result = parser.Expression();
+				
+	    		
+	            // Redondear valores muy pequeños a cero
+	            if (Math.abs(result) < 1e-10) result = 0.0;
+	            	System.out.println("Resultado: " + result);
+	        } catch (TokenMgrError e) {
+			    System.err.println("Error léxico: " + e.getMessage());
+			} catch (ParseException e) {
+			    System.err.println("Error sintáctico: " + e.getMessage());
+			}
+		        // Limpiar la pantalla (opcional)
+	        System.out.print("\033[H\033[2J"); // Limpia la pantalla en la mayoría de terminales
+	
+	        System.out.print("¿Desea ingresar otra expresión? (s/n): ");
+	        String continuar = entradaEscaner.nextLine();
+	
+	        if (!continuar.equalsIgnoreCase("s")) {
+	            break; // Salir del bucle si no se ingresa "s"
+	        }
+	    }
     }
 
     public static double sin(double x) {

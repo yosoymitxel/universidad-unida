@@ -8,21 +8,36 @@ public class Calculadora implements CalculadoraConstants {
 
     public static void main(String[] args) throws ParseException {
         Scanner entradaEscaner = new Scanner(System.in);
+                while (true) { // Ciclo infinito
+                System.out.print("Ingrese una expresi\u00f3n: ");
+                String calculo = entradaEscaner.nextLine();
 
-        System.out.print("Ingrese una expresi\u00f3n: ");
-        String calculo = entradaEscaner.nextLine();
+                // Intenta parsear la expresión y manejar la excepción ParseException
+                try {
+                    Calculadora parser = new Calculadora(new StringReader(calculo));
 
-        // Intenta parsear la expresión y manejar la excepción ParseException
-        try {
-            Calculadora parser = new Calculadora(new StringReader(calculo));
-            double result = parser.Expression();
 
-            // Redondear valores muy pequeños a cero
-            if (Math.abs(result) < 1e-10) result = 0.0;
-            System.out.println("Resultado: " + result);
-        } catch (ParseException e) {
-            System.out.println("Error de sintaxis: " + e.getMessage());
-        }
+                double result = parser.Expression();
+
+
+                    // Redondear valores muy pequeños a cero
+                    if (Math.abs(result) < 1e-10) result = 0.0;
+                        System.out.println("Resultado: " + result);
+                } catch (TokenMgrError e) {
+                            System.err.println("Error l\u00e9xico: " + e.getMessage());
+                        } catch (ParseException e) {
+                            System.err.println("Error sint\u00e1ctico: " + e.getMessage());
+                        }
+                        // Limpiar la pantalla (opcional)
+                System.out.print("\033[H\033[2J"); // Limpia la pantalla en la mayoría de terminales
+
+                System.out.print("\u00bfDesea ingresar otra expresi\u00f3n? (s/n): ");
+                String continuar = entradaEscaner.nextLine();
+
+                if (!continuar.equalsIgnoreCase("s")) {
+                    break; // Salir del bucle si no se ingresa "s"
+                }
+            }
     }
 
     public static double sin(double x) {
