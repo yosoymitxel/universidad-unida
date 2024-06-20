@@ -1,0 +1,99 @@
+PARSER_BEGIN(Calculadora)
+package tarea;
+import java.io.*;
+import java.util.*;
+
+public class Calculadora {
+    public static void main(String[] args) throws ParseException {
+      // String expresion = "cos(90)";  // Puedes cambiar esta expresión para probar diferentes casos
+
+//        Calculadora parser = new Calculadora(new StringReader(expresion));
+            System.out.print("Ingrese una expresión: ");
+
+           String calculo = "";
+
+           Scanner entradaEscaner = new Scanner (System.in); 
+           calculo = entradaEscaner.nextLine (); 
+
+         Calculadora parser = new Calculadora(new StringReader(calculo));
+
+        try {
+            double result = parser.Expression();
+            // Redondear valores muy pequeños a cero
+            if (Math.abs(result) < 1e-10) result = 0.0;
+            System.out.println("Resultado: " + result);
+        } catch (ParseException e) {
+            System.out.println("Error de sintaxis: " + e.getMessage());
+        }
+    }
+
+    public static double sin(double x) {
+        return Math.sin(Math.toRadians(x)); // Convertir grados a radianes para función sin
+    }
+
+    public static double cos(double x) {
+        return Math.cos(Math.toRadians(x)); // Convertir grados a radianes para función cos
+    }
+
+    public static double tan(double x) {
+        return Math.tan(Math.toRadians(x)); // Convertir grados a radianes para función tan
+    }
+}
+
+PARSER_END(Calculadora)
+
+SKIP: { " " | "\t" | "\n" | "\r" }
+
+TOKEN: {
+    < PLUS: "+" > |
+    < MINUS: "-" > |
+    < MULT: "*" > |
+    < DIV: "/" > |
+    < LPAREN: "(" > |
+    < RPAREN: ")" > |
+    < NUMBER: (["0"-"9"])+("."(["0"-"9"])+)? > |
+    < SIN: "sin" > |
+    < COS: "cos" > |
+    < TAN: "tan" >
+}
+
+double Expression() :
+{
+    double result, term;
+    Token t;
+}
+{
+    result = Term() ( 
+        ( t = <PLUS> | t = <MINUS> ) term = Term() { 
+            if (t.kind == PLUS) result += term; 
+            else result -= term; 
+        } 
+    )* { return result; }
+}
+
+double Term() :
+{
+    double result, factor;
+    Token t;
+}
+{
+    result = Factor() ( 
+        ( t = <MULT> | t = <DIV> ) factor = Factor() { 
+            if (t.kind == MULT) result *= factor; 
+            else result /= factor; 
+        } 
+    )* { return result; }
+}
+
+double Factor() :
+{
+    Token t;
+    double result;
+}
+{
+    t = <NUMBER> { return Double.parseDouble(t.image); }
+    | <LPAREN> result = Expression() <RPAREN> { return result; }
+    | <SIN> <LPAREN> result = Expression() <RPAREN> { return Calculadora.sin(result); }
+    | <COS> <LPAREN> result = Expression() <RPAREN> { return Calculadora.cos(result); }
+    | <TAN> <LPAREN> result = Expression() <RPAREN> { return Calculadora.tan(result); }
+}
