@@ -65,7 +65,7 @@ double Expression() :
     Token t;
 }
 {
-    result = Term();
+    result = Term()
     // Bucle para manejar sumas y restas sucesivas
     (
         ( t = <PLUS> | t = <MINUS> ) term = Term() {  // Coincide con un signo (+ o -) seguido de un término
@@ -83,7 +83,7 @@ double Term() :
     Token t;
 }
 {
-    result = Factor();
+    result = Factor()
     // Bucle para manejar multiplicaciones y divisiones sucesivas
     (
         ( t = <MULT> | t = <DIV> ) factor = Factor() {  // Coincide con un operador (* o /) seguido de un factor
@@ -124,4 +124,3 @@ double Factor() :
         }
     }
 }
-
