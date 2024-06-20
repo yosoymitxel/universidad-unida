@@ -6,6 +6,14 @@ import java.util.*;
 import CalculadoraLexer;
 import CalculadoraParser;
 
+/*
+
+		print("* asin(1)  = 1.5");
+		print("* acos(1)  = 0");
+		print("* atan(45) = 1.5");
+
+*/
+
 
 public class Calculadora implements CalculadoraConstants {
 
@@ -33,9 +41,7 @@ public class Calculadora implements CalculadoraConstants {
                 print("* sin(90)  = 1");
                 print("* cos(180) = -1");
                 print("* tan(45)  = 0.9");
-                print("* asin(1)  = 1.5");
-                print("* acos(1)  = 0");
-                print("* atan(45) = 1.5");
+
 
                 print("");
 
@@ -124,15 +130,15 @@ public class Calculadora implements CalculadoraConstants {
     }
 
         public static double asin(double x) {
-        return Math.asin(x);
+        return Math.asin(Math.toRadians(x));
     }
 
     public static double acos(double x) {
-        return Math.acos(x);
+        return Math.acos(Math.toRadians(x));
     }
 
     public static double atan(double x) {
-        return Math.atan(x);
+        return Math.atan(Math.toRadians(x));
     }
 
         public static void print(String x) {

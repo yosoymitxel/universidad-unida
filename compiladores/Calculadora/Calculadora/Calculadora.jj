@@ -6,6 +6,14 @@ import java.util.*;
 import CalculadoraLexer;
 import CalculadoraParser;
 
+/*
+
+		print("* asin(1)  = 1.5");
+		print("* acos(1)  = 0");
+		print("* atan(45) = 1.5");
+
+*/
+
 
 public class Calculadora {
 
@@ -33,9 +41,7 @@ public class Calculadora {
 		print("* sin(90)  = 1");
 		print("* cos(180) = -1");
 		print("* tan(45)  = 0.9");
-		print("* asin(1)  = 1.5");
-		print("* acos(1)  = 0");
-		print("* atan(45) = 1.5");
+
 
 		print("");
 		
