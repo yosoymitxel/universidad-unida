@@ -8,14 +8,35 @@ public class Calculadora implements CalculadoraConstants {
 
     public static void main(String[] args) throws ParseException {
 
-                generateTitleASCIIArt("Math scientific Calc");
+                // generateTitleASCIIArt("Math Scientific Calc");
+                titulo();
+
+                generateTitleASCIIArt("Instrucciones de uso:");
+
+                print("1. Ingrese una expresi\u00f3n matem\u00e1tica en la l\u00ednea de comandos.");
+                print("2. Presione Enter para evaluar la expresi\u00f3n.");
+                print("3. El resultado de la evaluaci\u00f3n se mostrar\u00e1 en la pantalla.");
+                print("");
+                generateTitleASCIIArt("Ejemplos de uso:");
+
+                print("* 2 + 2 = 4");
+                print("* 5 - 3 = 2");
+                print("* 4 * 3 = 12");
+                print("* 10 / 2 = 5");
+                print("* 2^3 = 8");
+                print("* \u221a9 = 3");
+                print("* log(10) = 1");
+                print("* sin(\u03c0/2) = 1");
+                print("* cos(\u03c0) = -1");
+                print("* tan(\u03c0/4) = 1");
+                print("");
+
 
         Scanner entradaEscaner = new Scanner(System.in);
 
-
                 while (true) { // Ciclo infinito
 
-                System.out.print("Ingrese una expresi\u00f3n: ");
+                generateTitleASCIIArt("Ingrese una expresi\u00f3n: ");
                 String calculo = entradaEscaner.nextLine();
 
                 // Intenta parsear la expresión y manejar la excepción ParseException
@@ -70,6 +91,10 @@ public class Calculadora implements CalculadoraConstants {
         return Math.atan(x);
     }
 
+        public static void print(String x) {
+        System.out.println(x);
+    }
+
     public static void generateTitleASCIIArt(String title) {
         int titleLength = title.length();
         int borderLength = titleLength + 4;
@@ -86,6 +111,16 @@ public class Calculadora implements CalculadoraConstants {
         asciiArt.append("+" + "-".repeat(borderLength - 2) + "+").append("\n");
 
         System.out.println(asciiArt.toString());
+    }
+
+
+        public static void titulo() {
+        System.out.println("   _____          __  .__        _________      .__               __  .__  _____.__         _________        .__          ");
+        System.out.println("  /     \\ _____ _/  |_|  |__    /   _____/ ____ |__| ____   _____/  |_|___/ ____|__| ____   \\_   ___ \\_____  |  |   ____  ");
+        System.out.println(" /  \\ /  \\\\__  \\\\   __|  |  \\   \\_____  \\_/ ___\\|  _/ __ \\ /    \\   __|  \\   __\\|  _/ ___\\  /    \\  \\/\\__  \\ |  | _/ ___\\ ");
+        System.out.println("/    Y    \\/ __ \\|  | |   Y  \\  /        \\  \\___|  \\  ___/|   |  |  | |  ||  |  |  \\  \\___  \\     \\____/ __ \\|  |_\\  \\___ ");
+        System.out.println("\\____|__  (____  |__| |___|  / /_______  /\\___  |__|\\___  |___|  |__| |__||__|  |__|\\___  >  \\______  (____  |____/\\___  >");
+        System.out.println("        \\/     \\/          \\/          \\/     \\/        \\/     \\/                       \\/          \\/      \\/         \\/ ");
     }
 
 // Método para la expresión (principal)
