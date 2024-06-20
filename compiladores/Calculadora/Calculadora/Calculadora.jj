@@ -124,15 +124,15 @@ public class Calculadora {
     }
 
 	public static double asin(double x) {
-        return Math.asin(x);
+        return Math.asin(Math.toRadians(x));
     }
 
     public static double acos(double x) {
-        return Math.acos(x);
+        return Math.acos(Math.toRadians(x));
     }
 
     public static double atan(double x) {
-        return Math.atan(x);
+        return Math.atan(Math.toRadians(x));
     }
 
  	public static void print(String x) {
