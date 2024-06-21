@@ -4,26 +4,80 @@ PARSER_BEGIN(Calculadora)
 import java.io.*;
 import java.util.*;
 
+
 public class Calculadora {
 
     public static void main(String[] args) throws ParseException {
+
+		// generateTitleASCIIArt("Math Scientific Calc");
+		titulo();
+
+		generateTitleASCIIArt("Instrucciones de uso:");
+		
+		print("1. Ingrese una expresión matemática en la línea de comandos.");
+		print("2. Presione Enter para evaluar la expresión.");
+		print("3. El resultado de la evaluación se mostrará en la pantalla.");
+		print("");
+		generateTitleASCIIArt("Ejemplos de uso:");
+		print("Aritméticas");
+		print("* 2 + 2    = 4");
+		print("* 5 - 3    = 2");
+		print("* 4 * 3    = 12");
+		print("* 10 / 2   = 5");
+
+		print("");
+		print("Trigonométricas");
+		print("* log(10)  = 1");
+		print("* sin(90)  = 1");
+		print("* cos(180) = -1");
+		print("* tan(45)  = 0.9");
+		print("");
+		
+		
         Scanner entradaEscaner = new Scanner(System.in);
-
-        System.out.print("Ingrese una expresión: ");
-        String calculo = entradaEscaner.nextLine();
-
-        // Intenta parsear la expresión y manejar la excepción ParseException
-        try {
-            Calculadora parser = new Calculadora(new StringReader(calculo));
-            double result = parser.Expression();
-
-            // Redondear valores muy pequeños a cero
-            if (Math.abs(result) < 1e-10) result = 0.0;
-            System.out.println("Resultado: " + result);
-        } catch (ParseException e) {
-            System.out.println("Error de sintaxis: " + e.getMessage());
-        }
+		Calculadora parser = new Calculadora(new StringReader(""));
+		
+		while (true) { // Ciclo infinito
+			
+        	generateTitleASCIIArt("Ingrese una expresión: ");
+	        String calculo = entradaEscaner.nextLine();
+			parser.ReInit(new StringReader(calculo));
+	
+	        // Intenta parsear la expresión y manejar la excepción ParseException
+	        try {
+				
+            	double result = parser.Expression();	
+	    		
+		        // Redondear valores muy pequeños a cero
+	            if (Math.abs(result) < 1e-10) result = 0.0;
+				
+				// Imprimir el resultado con dos decimales o sin decimales (si es entero)
+	            String formattedResult = String.format("%.2f", result); // Formatear con dos decimales
+	            if (formattedResult.indexOf('.') == -1) { // Si no hay punto decimal, eliminar los ceros decimales
+	                formattedResult = formattedResult.replace(",00", "");
+	            }
+	            
+	            System.out.println("Resultado: " + formattedResult);
+	            	
+	        } catch (TokenMgrError e) {
+			    System.err.println("Error léxico: " + e.getMessage());
+			} catch (ParseException e) {
+			    System.err.println("Error sintáctico: " + e.getMessage());
+			}catch (Exception e) {
+			  	System.err.println("Error general: " + e.getMessage());
+			}
+		        // Limpiar la pantalla (opcional)
+	        System.out.print("\033[H\033[2J"); // Limpia la pantalla en la mayoría de terminales
+	
+	        System.out.print("¿Desea ingresar otra expresión? (s/n): ");
+	        String continuar = entradaEscaner.nextLine();
+	
+	        if (!continuar.equalsIgnoreCase("s")) {
+	            break; // Salir del bucle si no se ingresa "s"
+	        }
+	    }
     }
+
 
     public static double sin(double x) {
         return Math.sin(Math.toRadians(x)); // Convertir grados a radianes para función sin
@@ -36,12 +90,80 @@ public class Calculadora {
     public static double tan(double x) {
         return Math.tan(Math.toRadians(x)); // Convertir grados a radianes para función tan
     }
+
+	public static double asin(double x) {
+        return Math.asin(Math.toRadians(x));
+    }
+
+    public static double acos(double x) {
+        return Math.acos(Math.toRadians(x));
+    }
+
+    public static double atan(double x) {
+        return Math.atan(Math.toRadians(x));
+    }
+
+ 	public static void print(String x) {
+        System.out.println(x);
+    }
+
+    public static void generateTitleASCIIArt(String title) {
+        int titleLength = title.length();
+        int borderLength = titleLength + 4;
+
+        StringBuilder asciiArt = new StringBuilder();
+
+        // Top border
+        asciiArt.append("+" + "-".repeat(borderLength - 2) + "+").append("\n");
+
+        // Title line
+        asciiArt.append("| " + title + " ".repeat(borderLength - titleLength - 3) + "|").append("\n");
+
+        // Bottom border
+        asciiArt.append("+" + "-".repeat(borderLength - 2) + "+").append("\n");
+
+        System.out.println(asciiArt.toString());
+    }
+
+
+	public static void titulo() {
+        System.out.println("   _____          __  .__        _________      .__               __  .__  _____.__         _________        .__          ");
+        System.out.println("  /     \\ _____ _/  |_|  |__    /   _____/ ____ |__| ____   _____/  |_|___/ ____|__| ____   \\_   ___ \\_____  |  |   ____  ");
+        System.out.println(" /  \\ /  \\\\__  \\\\   __|  |  \\   \\_____  \\_/ ___\\|  _/ __ \\ /    \\   __|  \\   __\\|  _/ ___\\  /    \\  \\/\\__  \\ |  | _/ ___\\ ");
+        System.out.println("/    Y    \\/ __ \\|  | |   Y  \\  /        \\  \\___|  \\  ___/|   |  |  | |  ||  |  |  \\  \\___  \\     \\____/ __ \\|  |_\\  \\___ ");
+        System.out.println("\\____|__  (____  |__| |___|  / /_______  /\\___  |__|\\___  |___|  |__| |__||__|  |__|\\___  >  \\______  (____  |____/\\___  >");
+        System.out.println("        \\/     \\/          \\/          \\/     \\/        \\/     \\/                       \\/          \\/      \\/         \\/ ");
+    }
+
+	// Método para calcular log 
+	public static double log(double value) {
+		double base = 10;
+    	if (base <= 0 || base == 1) {
+        	throw new IllegalArgumentException("Invalid base for logarithm");
+	    }
+    	return Math.log(value) / Math.log(base);
+	}
+
+	// Método para calcular la potenciación
+    public static double potenciar(double base, double exponente) {
+        return Math.pow(base, exponente);
+    }
+
+    // Método para calcular la raíz cuadrada
+    public static double raizCuadrada(double numero) {
+        if (numero < 0) {
+            throw new ArithmeticException("Error: Raíz cuadrada de un número negativo");
+        }
+        return Math.sqrt(numero);
+    }
+      
+    
 }
 
 // Ignorar espacios, tabuladores, saltos de línea y retorno de carro
 PARSER_END(Calculadora)
 
-SKIP: { " " | "\t" | "\n" | "\r" }
+SKIP: { " " | "\t" | "\n" | "\r"}
 
 // Definición de tokens
 TOKEN: {
@@ -54,7 +176,14 @@ TOKEN: {
     < NUMBER: (["0"-"9"])+("."(["0"-"9"])+)? > |  // Patrón para números (enteros y decimales)
     < SIN: "sin" > |
     < COS: "cos" > |
-    < TAN: "tan" >
+    < TAN: "tan" > |
+    < ASIN: "asin" > |
+    < ACOS: "acos" > |
+    < ATAN: "atan" > |
+	< POT: "^" > |
+	< SQRT: "sqrt" > |
+	< LOG: "log" >  
+    
 }
 
 // Método para la expresión (principal)
@@ -122,4 +251,16 @@ double Factor() :
             return Calculadora.tan(result);
         }
     }
+    | <ASIN> <LPAREN> result = Expression() <RPAREN> { return Calculadora.asin(result); }
+    | <ACOS> <LPAREN> result = Expression() <RPAREN> { return Calculadora.acos(result); }
+    | <ATAN> <LPAREN> result = Expression() <RPAREN> { return Calculadora.atan(result); }
+    | <LOG> <LPAREN> result = Expression() <RPAREN> { return Calculadora.log(result); }
+
+    
+	// Manejo de la raíz cuadrada
+	//| <SQRT> <LPAREN> result = Factor() <RPAREN> { return Calculadora.raizCuadrada(result); }
+    // Manejo de la potencia
+    //| base = Factor() <POT> exponente = Factor() { return Calculadora.potenciar(base, exponente); }
+    //| <POT> numero = Factor() { return Calculadora.raizCuadrada( numero ); }
+    
 }

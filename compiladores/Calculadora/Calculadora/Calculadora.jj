@@ -3,16 +3,6 @@ PARSER_BEGIN(Calculadora)
 // Paquete y librerías necesarias
 import java.io.*;
 import java.util.*;
-import CalculadoraLexer;
-import CalculadoraParser;
-
-/*
-
-		print("* asin(1)  = 1.5");
-		print("* acos(1)  = 0");
-		print("* atan(45) = 1.5");
-
-*/
 
 
 public class Calculadora {
@@ -41,8 +31,6 @@ public class Calculadora {
 		print("* sin(90)  = 1");
 		print("* cos(180) = -1");
 		print("* tan(45)  = 0.9");
-
-
 		print("");
 		
 		
@@ -54,7 +42,6 @@ public class Calculadora {
         	generateTitleASCIIArt("Ingrese una expresión: ");
 	        String calculo = entradaEscaner.nextLine();
 			parser.ReInit(new StringReader(calculo));
-	        
 	
 	        // Intenta parsear la expresión y manejar la excepción ParseException
 	        try {
@@ -67,8 +54,9 @@ public class Calculadora {
 				// Imprimir el resultado con dos decimales o sin decimales (si es entero)
 	            String formattedResult = String.format("%.2f", result); // Formatear con dos decimales
 	            if (formattedResult.indexOf('.') == -1) { // Si no hay punto decimal, eliminar los ceros decimales
-	                formattedResult = formattedResult.replace(".00", "");
+	                formattedResult = formattedResult.replace(",00", "");
 	            }
+	            
 	            System.out.println("Resultado: " + formattedResult);
 	            	
 	        } catch (TokenMgrError e) {
@@ -90,32 +78,6 @@ public class Calculadora {
 	    }
     }
 
-	// Método para analizar una expresión y obtener el resultado
-    public static double evaluar(String expresion) throws ParseException {
-        // Inicialización del analizador
-        SimpleCharStream stream = new SimpleCharStream(expresion);
-        CalculadoraLexer lexer = new CalculadoraLexer(stream);
-        CalculadoraParser parser = new CalculadoraParser(lexer);
-
-        // Análisis de la expresión y obtención del árbol de sintaxis abstracta (AST)
-        Token token = lexer.getNextToken();
-        double resultado = parser.Expression(token);
-
-        return resultado;
-    }
-
- 	// Método para calcular la potenciación
-    public static double potenciar(double base, double exponente) {
-        return Math.pow(base, exponente);
-    }
-
-    // Método para calcular la raíz cuadrada
-    public static double raizCuadrada(double numero) {
-        if (numero < 0) {
-            throw new ArithmeticException("Error: Raíz cuadrada de un número negativo");
-        }
-        return Math.sqrt(numero);
-    }
 
     public static double sin(double x) {
         return Math.sin(Math.toRadians(x)); // Convertir grados a radianes para función sin
@@ -173,15 +135,27 @@ public class Calculadora {
         System.out.println("        \\/     \\/          \\/          \\/     \\/        \\/     \\/                       \\/          \\/      \\/         \\/ ");
     }
 
-
+	// Método para calcular log 
 	public static double log(double value) {
 		double base = 10;
     	if (base <= 0 || base == 1) {
         	throw new IllegalArgumentException("Invalid base for logarithm");
 	    }
     	return Math.log(value) / Math.log(base);
-}
-	    
+	}
+
+	// Método para calcular la potenciación
+    public static double potenciar(double base, double exponente) {
+        return Math.pow(base, exponente);
+    }
+
+    // Método para calcular la raíz cuadrada
+    public static double raizCuadrada(double numero) {
+        if (numero < 0) {
+            throw new ArithmeticException("Error: Raíz cuadrada de un número negativo");
+        }
+        return Math.sqrt(numero);
+    }
       
     
 }
@@ -281,11 +255,12 @@ double Factor() :
     | <ACOS> <LPAREN> result = Expression() <RPAREN> { return Calculadora.acos(result); }
     | <ATAN> <LPAREN> result = Expression() <RPAREN> { return Calculadora.atan(result); }
     | <LOG> <LPAREN> result = Expression() <RPAREN> { return Calculadora.log(result); }
+
+    
 	// Manejo de la raíz cuadrada
 	//| <SQRT> <LPAREN> result = Factor() <RPAREN> { return Calculadora.raizCuadrada(result); }
     // Manejo de la potencia
     //| base = Factor() <POT> exponente = Factor() { return Calculadora.potenciar(base, exponente); }
     //| <POT> numero = Factor() { return Calculadora.raizCuadrada( numero ); }
-    
     
 }
